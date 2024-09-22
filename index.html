@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Website Loader</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta property="og:title" content="Dynamic Website Loader" />
+    <meta property="og:description" content="Load any website dynamically in an iframe!" />
+    <meta property="og:image" content="URL_TO_YOUR_PURPLE_IMAGE" /> <!-- Use a purple-themed image -->
+    <meta property="og:url" content="YOUR_WEBSITE_URL" />
+    <meta property="og:type" content="website" />
+    <style>
+        @font-face {
+            font-family: 'MyCustomFont';
+            src: url('/Heavitas.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'MyCustomFont', Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a, #151515);
+            animation: gradientAnimation 10s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .clean-input {
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            width: 80%;
+            max-width: 400px;
+            transition: border-color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .clean-input:focus {
+            border-color: #6200ea;
+            outline: none;
+        }
+
+        .clean-button {
+            background-color: #6200ea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .clean-button:hover {
+            background-color: #3700b3;
+            transform: translateY(-2px);
+        }
+
+        iframe {
+            width: 80%;
+            height: 60vh;
+            border: 1px solid #151515;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        #loader {
+            display: none;
+            font-size: 20px;
+            color: #ffffff;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 24px;
+            }
+            .clean-input, .clean-button {
+                width: 90%;
+            }
+        }
+    </style>
+    <script>
+        function loadWebsite() {
+            const url = document.getElementById('urlInput').value;
+            const iframe = document.getElementById('webframe');
+            const loader = document.getElementById('loader');
+
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                alert('Please enter a valid URL starting with http:// or https://');
+                return;
+            }
+
+            loader.style.display = 'block'; // Show loader
+            iframe.onload = () => loader.style.display = 'none'; // Hide loader after loading
+            iframe.src = url;
+        }
+
+        function toggleFullScreen() {
+            const iframe = document.getElementById('webframe');
+            if (iframe.requestFullscreen) {
+                iframe.requestFullscreen();
+            } else if (iframe.mozRequestFullScreen) {
+                iframe.mozRequestFullScreen();
+            } else if (iframe.webkitRequestFullscreen) {
+                iframe.webkitRequestFullscreen();
+            } else if (iframe.msRequestFullscreen) {
+                iframe.msRequestFullscreen();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('urlInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') loadWebsite();
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Dynamic Website Loader</h1>
+    <input type="text" class="clean-input" id="urlInput" placeholder="e.g. https://example.com" />
+    <button onclick="loadWebsite()" class="clean-button">Load Website</button>
+    <button onclick="toggleFullScreen()" class="clean-button">Full Screen</button>
+    
+    <div id="loader">Loading...</div>
+    <iframe id="webframe" src="https://example.com"></iframe>
+</body>
+</html>
